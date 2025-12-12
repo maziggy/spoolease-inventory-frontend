@@ -4,7 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=spoolease
+# Change to your preferred user, or remove to run as root
+#User=spoolease
 WorkingDirectory=/opt/spoolease-inventory
 ExecStart=/usr/bin/npm run start
 Restart=on-failure

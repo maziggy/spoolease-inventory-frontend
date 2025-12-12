@@ -71,12 +71,10 @@ This serves the app at http://0.0.0.0:4173, accessible from any device on your n
 
 To run as a system service:
 
-1. Create a user and install the app:
+1. Install the app:
    ```bash
-   sudo useradd -r -s /bin/false spoolease
    sudo mkdir -p /opt/spoolease-inventory
    sudo cp -r dist node_modules package.json /opt/spoolease-inventory/
-   sudo chown -R spoolease:spoolease /opt/spoolease-inventory
    ```
 
 2. Install the service:
