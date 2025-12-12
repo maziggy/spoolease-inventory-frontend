@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "build:standalone": "tsc && vite build --outDir dist --emptyOutDir",
     "preview": "vite preview",
-    "start": "vite preview --outDir dist",
+    "start": "vite preview --outDir dist --host 0.0.0.0",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {

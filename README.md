@@ -65,7 +65,7 @@ npm run build:standalone
 npm run start
 ```
 
-This serves the app at http://localhost:4173. Note: You still need a SpoolEase device on your network for the API proxy to work.
+This serves the app at http://0.0.0.0:4173, accessible from any device on your network. Note: You still need a SpoolEase device on your network for the API proxy to work.
 
 ### ESP32 Deployment
 
