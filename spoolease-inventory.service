@@ -1,0 +1,15 @@
+[Unit]
+Description=SpoolEase Inventory Frontend
+After=network.target
+
+[Service]
+Type=simple
+User=spoolease
+WorkingDirectory=/opt/spoolease-inventory
+ExecStart=/usr/bin/npm run start
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

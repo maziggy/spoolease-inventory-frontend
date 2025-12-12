@@ -67,6 +67,31 @@ npm run start
 
 This serves the app at http://0.0.0.0:4173, accessible from any device on your network. Note: You still need a SpoolEase device on your network for the API proxy to work.
 
+### Systemd Service (Linux)
+
+To run as a system service:
+
+1. Create a user and install the app:
+   ```bash
+   sudo useradd -r -s /bin/false spoolease
+   sudo mkdir -p /opt/spoolease-inventory
+   sudo cp -r dist node_modules package.json /opt/spoolease-inventory/
+   sudo chown -R spoolease:spoolease /opt/spoolease-inventory
+   ```
+
+2. Install the service:
+   ```bash
+   sudo cp spoolease-inventory.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable spoolease-inventory
+   sudo systemctl start spoolease-inventory
+   ```
+
+3. Check status:
+   ```bash
+   sudo systemctl status spoolease-inventory
+   ```
+
 ### ESP32 Deployment
 
 The default `npm run build` outputs to `../../bins/0.5/inventory-new` for embedding into SpoolEase device firmware.
