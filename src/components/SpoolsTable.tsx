@@ -21,6 +21,7 @@ import { ColumnConfig } from './ColumnConfigModal'
 
 const columnHelper = createColumnHelper<Spool>()
 const PAGE_SIZE_KEY = 'spoolease-page-size'
+const SORTING_KEY = 'spoolease-sorting'
 
 function getStoredPageSize(): number {
   try {
@@ -35,6 +36,18 @@ function getStoredPageSize(): number {
   return 15
 }
 
+function getStoredSorting(): SortingState {
+  try {
+    const stored = localStorage.getItem(SORTING_KEY)
+    if (stored) {
+      return JSON.parse(stored)
+    }
+  } catch {
+    // Ignore errors
+  }
+  return [{ id: 'id', desc: false }]
+}
+
 interface SpoolsTableProps {
   spools: Spool[]
   onEditSpool?: (spool: Spool) => void
@@ -45,7 +58,7 @@ interface SpoolsTableProps {
 
 export function SpoolsTable({ spools, onEditSpool, onDeleteSpool, columnConfig, onOpenColumns }: SpoolsTableProps) {
   const { spoolsInPrinters } = useApp()
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>(getStoredSorting)
   const [globalFilter, setGlobalFilter] = useState('')
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table')
   const [pagination, setPagination] = useState({
@@ -57,6 +70,11 @@ export function SpoolsTable({ spools, onEditSpool, onDeleteSpool, columnConfig, 
   useEffect(() => {
     localStorage.setItem(PAGE_SIZE_KEY, String(pagination.pageSize))
   }, [pagination.pageSize])
+
+  // Save sorting to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem(SORTING_KEY, JSON.stringify(sorting))
+  }, [sorting])
 
   // All available column definitions (matching old inventory)
   const allColumnDefs = useMemo(
