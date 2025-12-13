@@ -24,6 +24,7 @@ export interface Spool {
   added_full?: boolean
   consumed_since_add: number
   consumed_since_weight: number
+  weight_used: number  // Calculated: how much was used before last weighing
   ext_has_k: boolean
   data_origin: string
   tag_type: string
@@ -227,6 +228,18 @@ class ApiClient {
 
       const values = this.parseCsvLine(line)
 
+      const label_weight = values[8] ? parseInt(values[8], 10) : 0
+      const core_weight = values[9] ? parseInt(values[9], 10) : 0
+      const weight_current = values[11] ? parseInt(values[11], 10) : undefined
+
+      // Calculate weight_used: how much was used before last weighing
+      // weight_used = label_weight - (weight_current - core_weight)
+      let weight_used = 0
+      if (weight_current !== undefined) {
+        const net_remaining = weight_current - core_weight
+        weight_used = Math.max(0, label_weight - net_remaining)
+      }
+
       const spool: Spool = {
         id: values[0] || '',
         tag_id: values[1] || '',
@@ -236,16 +249,17 @@ class ApiClient {
         rgba: this.colorCodeToRgba(values[5] || ''),
         note: values[6] || '',
         brand: values[7] || '',
-        label_weight: values[8] ? parseInt(values[8], 10) : 0,
-        core_weight: values[9] ? parseInt(values[9], 10) : 0,
+        label_weight,
+        core_weight,
         weight_new: values[10] ? parseInt(values[10], 10) : undefined,
-        weight_current: values[11] ? parseInt(values[11], 10) : undefined,
+        weight_current,
         slicer_filament: values[12] || '',
         added_time: values[13] || undefined,
         encode_time: values[14] || undefined,
         added_full: this.parseBooleanField(values[15]),
         consumed_since_add: this.decodeBase64Float(values[16]),
         consumed_since_weight: this.decodeBase64Float(values[17]),
+        weight_used,
         ext_has_k: this.parseBooleanField(values[18]),
         data_origin: values[19] || '',
         tag_type: values[20] || '',

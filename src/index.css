@@ -464,6 +464,8 @@ body {
   font-size: 14px;
   cursor: pointer;
   white-space: nowrap;
+  background: transparent;
+  border: none;
 }
 
 .dropdown-item:hover {

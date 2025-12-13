@@ -190,10 +190,17 @@ export const COLOR_PRESETS = [
 ]
 
 /**
+ * Calculate total used weight (weight_used + consumed_since_weight)
+ */
+export function getTotalUsed(spool: Spool): number {
+  return spool.weight_used + spool.consumed_since_weight
+}
+
+/**
  * Calculate net weight (remaining filament)
  */
 export function getNetWeight(spool: Spool): number {
-  return Math.max(0, spool.label_weight - spool.consumed_since_add)
+  return Math.max(0, spool.label_weight - getTotalUsed(spool))
 }
 
 /**
@@ -208,7 +215,7 @@ export function getGrossWeight(spool: Spool): number {
  */
 export function getUsagePercent(spool: Spool): number {
   if (spool.label_weight <= 0) return 0
-  return Math.min(100, (spool.consumed_since_add / spool.label_weight) * 100)
+  return Math.min(100, (getTotalUsed(spool) / spool.label_weight) * 100)
 }
 
 /**
@@ -274,9 +281,12 @@ export function compareWeights(
 /**
  * Format weight in grams or kg
  */
-export function formatWeight(grams: number, useKg: boolean = false): string {
+export function formatWeight(grams: number, useKg: boolean = false, decimals: boolean = false): string {
   if (useKg && grams >= 1000) {
     return `${(grams / 1000).toFixed(1)}kg`
+  }
+  if (decimals) {
+    return `${grams.toFixed(1)}g`
   }
   return `${Math.round(grams)}g`
 }
