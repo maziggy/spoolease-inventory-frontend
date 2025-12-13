@@ -200,11 +200,15 @@ export function SpoolsTable({ spools, onEditSpool, onDeleteSpool, columnConfig, 
         },
         size: 50,
       }),
-      // Used (consumed since add)
-      columnHelper.accessor('consumed_since_add', {
+      // Used (weight_used + consumed_since_weight)
+      columnHelper.accessor((row) => row.weight_used + row.consumed_since_weight, {
         id: 'used',
         header: 'Used',
-        cell: (info) => formatWeight(info.getValue() || 0, false, true),
+        cell: (info) => {
+          const value = info.getValue()
+          if (!value) return <span class="text-[var(--text-muted)]">-</span>
+          return formatWeight(value, false, true)
+        },
         size: 70,
       }),
       // Printed Total (same as consumed_since_add)
