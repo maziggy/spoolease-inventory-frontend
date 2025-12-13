@@ -204,21 +204,21 @@ export function SpoolsTable({ spools, onEditSpool, onDeleteSpool, columnConfig, 
       columnHelper.accessor('consumed_since_add', {
         id: 'used',
         header: 'Used',
-        cell: (info) => formatWeight(info.getValue() || 0),
+        cell: (info) => formatWeight(info.getValue() || 0, false, true),
         size: 70,
       }),
       // Printed Total (same as consumed_since_add)
       columnHelper.accessor('consumed_since_add', {
         id: 'printed_total',
         header: 'Printed Total',
-        cell: (info) => formatWeight(info.getValue() || 0),
+        cell: (info) => formatWeight(info.getValue() || 0, false, true),
         size: 100,
       }),
       // Printed Since Weight
       columnHelper.accessor('consumed_since_weight', {
         id: 'printed_since_weight',
         header: 'Printed Since Weight',
-        cell: (info) => formatWeight(info.getValue() || 0),
+        cell: (info) => formatWeight(info.getValue() || 0, false, true),
         size: 130,
       }),
       // Note

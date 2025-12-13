@@ -274,9 +274,12 @@ export function compareWeights(
 /**
  * Format weight in grams or kg
  */
-export function formatWeight(grams: number, useKg: boolean = false): string {
+export function formatWeight(grams: number, useKg: boolean = false, decimals: boolean = false): string {
   if (useKg && grams >= 1000) {
     return `${(grams / 1000).toFixed(1)}kg`
+  }
+  if (decimals) {
+    return `${grams.toFixed(1)}g`
   }
   return `${Math.round(grams)}g`
 }
